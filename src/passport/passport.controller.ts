@@ -1,8 +1,12 @@
-import { BadGatewayException, Controller } from '@nestjs/common';
+import { BadGatewayException, Controller, UseGuards } from '@nestjs/common';
 import { Body, Get, Injectable, Req, Res, Next, Post, ValidationPipe } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDTO } from 'src/DTO/Register.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { getUser } from 'src/Decorator/getUser';
+import { User } from 'src/Model/User.model';
+import { RequestWithUser } from 'src/DTO/Request.dto';
 
 @Controller('passport')
 export class PassportController {
@@ -21,5 +25,11 @@ export class PassportController {
         } catch (error) {
             new BadGatewayException();
         }
+    }
+
+    @Get('/test')
+    @UseGuards(AuthGuard())
+    test(@Req() req: RequestWithUser) {
+        return req.user;
     }
 }

@@ -3,6 +3,7 @@ import { PassportService } from './passport.service';
 import { PassportController } from './passport.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './passport.strategy';
 
 
 @Module({
@@ -14,9 +15,9 @@ import { PassportModule } from '@nestjs/passport';
                 expiresIn: 3600
             }
         })],
-    providers: [PassportService],
+    providers: [PassportService, JwtStrategy],
     controllers: [PassportController],
-    exports: []
+    exports: [PassportModule, JwtStrategy]
 })
 export class PassportImplementationModule { }
 
