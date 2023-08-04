@@ -17,8 +17,9 @@ export class JwtStrategy extends PassportStrategy(Strategy)
     //will be extracted from JWT and validate() method will be called by Passport and payload  
     //will be passed as an argument. whatever returned by this method will set the user property
     //in request object.
-    async validate(payload: any): Promise<User> {
+    async validate(payload: { userName: string, password: string, email: string, iat: number }):
+        Promise<{ userName: string, password: string, email: string, user: User }> {
         let { userName, password, email } = payload;
-        return new User(userName, email, password);
+        return { userName, password, email, user: new User(userName, email, password) };
     }
 }
